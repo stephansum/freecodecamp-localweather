@@ -71,7 +71,16 @@ function getIconName(weather, mapping) {  // credits to https://gist.github.com/
 
     // If we are not in the ranges mentioned above, add a day/night prefix.
     if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
-        icon = 'day-' + icon;
+        let today = new Date();
+        let hour = today.getHours();
+        let prefix;
+
+        if (hour > 6 && hour < 20) // day time
+            prefix = "day-";
+        else
+            prefix = "night-";
+
+        icon = prefix + icon;
     }
 
     // Finally tack on the prefix.
