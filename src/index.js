@@ -5,12 +5,30 @@ import './custom.scss';
 import jQuery from "jquery";
 window.$ = window.jQuery = jQuery;  // make jQuery globally available
 
+var currentUnitIsFahrenheit = false;
+var temperatureInFahrenheit;
+var temperatureInCelcius;
 
 // main entry point
 
 $(() => {
+    
+    // setup click handler for temperature conversion
+    $("#temperature-container").click(() => {
+        if (currentUnitIsFahrenheit)
+            updateTemperature(true);
+        else
+            updateTemperature(false);
+    });
+
+
+    // get data and display it
     getUserLocationByIP().then(function(data) {
+        updateLocation(data.city, data.country);
         getWeather(new OpenWeatherMapUrl(data.city).combined).done(function(weather) {
+            temperatureInFahrenheit = Math.round(convertCelciusToFahrenheit(weather.main.temp));
+            temperatureInCelcius = weather.main.temp;
+            updateTemperature(false);
             loadIconMappings().done(function(mapping) {
                 var iconName = getIconName(weather, mapping);
                 updateWeatherIcon(iconName);
@@ -59,3 +77,30 @@ function getIconName(weather, mapping) {  // credits to https://gist.github.com/
     // Finally tack on the prefix.
     return prefix + icon;
 }
+
+function updateLocation(city, country) {
+    $("#location").text(city + ", " + country);
+}
+
+function updateTemperature(useFahrenheit) {
+    let temperature;
+    let unit;
+    if (useFahrenheit) {
+        temperature = temperatureInFahrenheit;
+        unit = "°F";
+    }
+    else {
+        temperature = temperatureInCelcius;
+        unit = "°C";
+    }
+
+    $("#temperature").text(temperature);
+    $("#unit").text(unit);
+
+    currentUnitIsFahrenheit = !currentUnitIsFahrenheit;
+}
+
+function convertCelciusToFahrenheit(celcius) {
+    return (celcius * 1.8) + 32.0;
+}
+
