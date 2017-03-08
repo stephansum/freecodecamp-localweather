@@ -3,8 +3,8 @@
 <head>
     <!-- Encoding as early as possible: must be included completely within the first 1024 bytes of the document !-->
     <meta charset="UTF-8">
-    <title></title>
-    <meta name="description" content="">
+    <title>Local Weather App - FreeCodeCamp assignment</title>
+    <meta name="description" content="Local Weather App - FreeCodeCamp assignment">
     
     <!-- Will force Internet Explorer 8/9/10 to render the webpage in the highest available mode and not in a compatibility mode !-->
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,10 +12,24 @@
     <!-- prevent mobile devices from faking a bigger viewport, which would result in zoomed out websites -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+
     <!-- Place favicon.ico in the root directory - favicon is displayed in browsers favorite bar -->
 </head>
 <body>
     
+    <div class="container">
+        
+    </div>
+
+    <i id="weather-icon" class="wi wi-day-lightning"></i>
+
+    <div id="profiles">
+        <a href="http://portfolio.blackmesa.eu" title="personal portfolio"><img id="blackmesa-logo" src="./images/logo_white.svg" alt="blackmesa-logo"></a>
+        <a href="https://github.com/BlackMesaCode/freecodecamp-localweather" title="github repo"><i class="fa fa-github"></i></a>
+        <a href="https://www.freecodecamp.com/blackmesacode" title="freecodecamp profile"><i class="fa fa-free-code-camp"></i></a>
+    </div>
+
     <!-- polyfill.io reads user agent arguments and returns only the polyfills that are needed by the users browser -->
     <script src="https://cdn.polyfill.io/v1/polyfill.min.js"></script>
 </body>
