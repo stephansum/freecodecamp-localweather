@@ -65,7 +65,6 @@ module.exports = {
     // Configuration options for the webpack-dev-server
     devServer: {
         contentBase: path.join(__dirname, "dist"),
-        compress: true,
-        port: 3000
+        compress: true
     }
 };

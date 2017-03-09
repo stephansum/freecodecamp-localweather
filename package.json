@@ -13,7 +13,7 @@
     "prebuild:prod": "npm run prebuild",
     "build:dev": "webpack --env=dev --progress --profile --colors --config webpack.config.dev.js",
     "build:prod": "webpack --env=prod --progress --profile --colors --config webpack.config.prod.js",
-    "localtunnel": "lt --port 3000",
+    "localtunnel": "lt --port 8080",
     "predeploy:github": "npm run build:prod",
     "deploy:github": "gh-pages -d dist"
   },
