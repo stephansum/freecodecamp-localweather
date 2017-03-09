@@ -27,7 +27,7 @@ $(() => {
         updateLocation(data.city, data.country);
         getWeather(new OpenWeatherMapUrl(data.city).combined).done(function(weather) {
             temperatureInFahrenheit = Math.round(convertCelciusToFahrenheit(weather.main.temp));
-            temperatureInCelcius = weather.main.temp;
+            temperatureInCelcius = Math.round(weather.main.temp);
             updateTemperature(false);
             loadIconMappings().done(function(mapping) {
                 var iconName = getIconName(weather, mapping);
