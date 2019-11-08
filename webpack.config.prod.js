@@ -3,10 +3,11 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WriteFilePlugin = require('write-file-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
+    mode: 'production',
     entry: './src/index.js',
     // devtool: 'source-map', // not working
     output: {
@@ -34,7 +35,6 @@ module.exports = {
         // select files to copy around
         new CopyWebpackPlugin([
             { context: 'src', from: 'images/**/*', to: '' },
-            { context: 'src', from: '*.json', to: '' },
             { context: 'src', from: 'favicon.ico', to: '' }
             ], 
             {
@@ -43,10 +43,8 @@ module.exports = {
         ),
         // copy files around
         new WriteFilePlugin(),
-        // Generate an external css file with a hash in the filename (to avoid FOUC)
-        new ExtractTextPlugin('[name].[contenthash].css'),
-        // Minify JS
-        new webpack.optimize.UglifyJsPlugin(),
+        // Generate an external css file with a hash in the filename (to avoid Flash of unstyled content (FOUC))
+        new MiniCssExtractPlugin({filename: "[name]-[contenthash:8].css"}),
         // Minify CSS
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,
@@ -67,19 +65,20 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    //resolve-url-loader may be chained before sass-loader if necessary
-                    use: ['css-loader', 'postcss-loader', 'sass-loader'] // sourceMaps should work by appending "?sourceMap" but it dont
-                })
+                use: [
+                    MiniCssExtractPlugin.loader, // to avoid  Flash of unstyled content (FOUC)
+                    { loader: 'css-loader', options: { importLoaders: 2 } },  // importLoaders allow to configure which loaders should be applied to @imported resources.  importLoaders (int): That many loaders after the css-loader are used to import resources.
+                    // 'postcss-loader',
+                    "sass-loader"
+                ]
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'postcss-loader']
-                })
-            },
+                use: [
+                    'style-loader',
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    // 'postcss-loader'
+            ]},
             {
                 test: /\.(jpg|png|gif|ttf|eot|svg|woff|woff2)$/,
                 loader: 'url-loader',
